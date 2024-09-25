@@ -14,6 +14,7 @@ class Server{
         this.app.use(express.json())
     }
     rutas() {
+        this.app.use('/usuarios', require('../routes/UsuariosRutas'));
         this.app.use('/sucursales', require('../routes/SucursalesRutas'));
         this.app.use('/servicios', require('../routes/ServiciosRutas'));
     }
