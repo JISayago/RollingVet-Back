@@ -1,4 +1,6 @@
 const UsuarioModel = require("../models/UsuarioSchema");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const obtenerUsuarios = async () => {
     try {
@@ -39,6 +41,11 @@ const obtenerUsuario = async (idUsuario) => {
 const agregarUsuario = async (body) => {
     try {
         const nuevoUsuario = new UsuarioModel(body);
+        
+        const salt = await bcrypt.genSalt(10);
+
+        nuevoUsuario.contrasenia = await bcrypt.hash(nuevoUsuario.contrasenia, salt);
+        console.log(nuevoUsuario)
         await nuevoUsuario.save();
         return {
             msg: 'Usuario agregado con éxito',
@@ -102,10 +109,47 @@ const eliminarUsuarioLogico = async (idUsuario) => {
     }
 };
 
+const inicioSesion = async (body) => {
+    const usuarioExiste = await UsuarioModel.findOne({ email: body.email }) 
+    
+    if (!usuarioExiste) {
+        return {
+            msg: 'Usuario y/o contraseña incorrectos',
+            statusCode: 400
+        }
+    }
+    const compararContrasenias = await bcrypt.compare(
+        body.contrasenia,
+        usuarioExiste.contrasenia
+      );
+    if (compararContrasenias) {
+        const payload = {
+            idUsuario: usuarioExiste._id,
+            rol: usuarioExiste.rol
+        }
+
+        const token = jwt.sign(payload,process.env.JWT_SECRET);
+        return {
+            msg: 'usuario Logeado',
+            token,
+            statusCode:200
+        }
+    } else {
+        
+        return {
+            msg: 'Usuario y/o contraseña incorrectos',
+            statusCode: 400
+        }
+    }
+        
+    
+}
+
 module.exports = {
     obtenerUsuarios,
     obtenerUsuario,
     agregarUsuario,
     editarUsuario,
-    eliminarUsuarioLogico
+    eliminarUsuarioLogico,
+    inicioSesion
 };

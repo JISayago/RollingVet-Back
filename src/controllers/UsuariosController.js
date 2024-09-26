@@ -60,10 +60,24 @@ const eliminarUnUsuarioLogico = async (req, res) => {
     }
 };
 
+const inicioDeSesion = async (req, res) => {
+    const result = await serviciosUsuarios.inicioSesion(req.body);
+  if (result.statusCode === 200) {
+    res
+      .status(200)
+      .json({ msg: result.msg, token: result.token});
+  } else if (result.statusCode === 400) {
+    res.status(400).json({ msg: result.msg });
+  } else {
+    res.status(500).json({ msg: "Error al iniciar sesion del usuario" });
+  }
+}
+
 module.exports = {
     obtenerTodasLosUsuarios,
     obtenerUnUsuario,
     agregarUnUsuario,
     editarUnUsuario,
-    eliminarUnUsuarioLogico
+    eliminarUnUsuarioLogico,
+    inicioDeSesion
 };

@@ -21,11 +21,11 @@ const UsuarioSchema = new mongoose.Schema({
     direccion: {
         type: String,
     },
-    roles: {
-        type: [String],
+    rol: {
+        type: String,
         required: true,
         enum: ['cliente', 'administrador', 'veterinario','pasante','peluquero','empleado'], 
-        default: ['cliente']  
+        default: 'cliente'  
     },  
     esEmpleado: {
         type: Boolean,
