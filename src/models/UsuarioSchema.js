@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require("mongoose");
 
-const UsuarioSchema = new Schema({
+const UsuarioSchema = new mongoose.Schema({
     nombre: {
         type: String,
         required: true
@@ -33,8 +32,9 @@ const UsuarioSchema = new Schema({
         default: false
     },
     mascotas: [{
+        _id:false,
         mascotaId: {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Mascota'
         },  
         nombre: {
@@ -54,7 +54,7 @@ const UsuarioSchema = new Schema({
         type: Boolean,
         default:false
     }
-});
+},{ id: false });
 
 const Usuario = mongoose.model('Usuario', UsuarioSchema);
 module.exports = Usuario;

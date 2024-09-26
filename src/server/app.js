@@ -15,6 +15,7 @@ class Server{
     }
     rutas() {
         this.app.use('/usuarios', require('../routes/UsuariosRutas'));
+        this.app.use('/mascotas', require('../routes/MascotasRutas'));
         this.app.use('/sucursales', require('../routes/SucursalesRutas'));
         this.app.use('/servicios', require('../routes/ServiciosRutas'));
     }
