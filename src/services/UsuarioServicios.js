@@ -37,27 +37,52 @@ const obtenerUsuario = async (idUsuario) => {
         };
     }
 };
+const obtenerPerfilUsuario = async (idUsuario) => {
+    try {
+        const usuario = await UsuarioModel.findOne({ _id: idUsuario });
+        if (!usuario) {
+            return {
+                msg: 'Usuario no encontrado',
+                statusCode: 404,
+            };
+        }
+        return {
+            usuario,
+            statusCode: 200,
+        };
+    } catch (error) {
+        return {
+            msg: 'Error al obtener usuario',
+            statusCode: 500,
+        };
+    }
+};
+
 
 const agregarUsuario = async (body) => {
     try {
         const nuevoUsuario = new UsuarioModel(body);
         
         const salt = await bcrypt.genSalt(10);
-
         nuevoUsuario.contrasenia = await bcrypt.hash(nuevoUsuario.contrasenia, salt);
-        console.log(nuevoUsuario)
+        
         await nuevoUsuario.save();
+        
+        console.log("Usuario guardado con éxito");
+        
         return {
             msg: 'Usuario agregado con éxito',
             statusCode: 201,
         };
     } catch (error) {
+        console.error("Error en agregarUsuario:", error); // Imprime el error
         return {
             msg: 'Error al agregar usuario',
             statusCode: 500,
         };
     }
 };
+
 
 const editarUsuario = async (idUsuario, body) => {
     try {
@@ -110,8 +135,8 @@ const eliminarUsuarioLogico = async (idUsuario) => {
 };
 
 const inicioSesion = async (body) => {
-    const usuarioExiste = await UsuarioModel.findOne({ email: body.email }) 
-    
+    console.log("body",body)
+    const usuarioExiste = await UsuarioModel.findOne({ email: body.email }).select('+contrasenia') 
     if (!usuarioExiste) {
         return {
             msg: 'Usuario y/o contraseña incorrectos',
@@ -128,10 +153,12 @@ const inicioSesion = async (body) => {
             rol: usuarioExiste.rol
         }
 
-        const token = jwt.sign(payload,process.env.JWT_SECRET);
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
+        const rol = usuarioExiste.rol
         return {
             msg: 'usuario Logeado',
             token,
+            rol,
             statusCode:200
         }
     } else {
@@ -151,5 +178,6 @@ module.exports = {
     agregarUsuario,
     editarUsuario,
     eliminarUsuarioLogico,
-    inicioSesion
+    inicioSesion,
+    obtenerPerfilUsuario
 };

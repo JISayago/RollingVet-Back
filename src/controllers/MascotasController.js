@@ -31,7 +31,7 @@ const obtenerUnaMascota = async (req, res) => {
 };
 
 const agregarUnaMascota = async (req, res) => {
-    const idUsuario = req.params.id;
+    const idUsuario = req.idUsuario;
 
     try {
         const result = await servicioMascota.agregarMascota(idUsuario, req.body);

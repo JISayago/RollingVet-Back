@@ -43,18 +43,20 @@ const obtenerMascota = async (idMascota) => {
 const agregarMascota = async (idUsuario, body) => {
     try {
         const nuevaMascota = new MascotaModel(body);
+        nuevaMascota.duenioId = idUsuario;
         const mascotaGuardada = await nuevaMascota.save();
-
+console.log(mascotaGuardada)
         const usuarioActualizado = await UsuarioModel.findByIdAndUpdate(
-            {_id: idUsuario}, 
+            {_id:idUsuario}, // Aquí usas solo el id, no necesitas un objeto
             {
                 $push: {
                     mascotas: {
-                        mascotaId: mascotaGuardada._id,  
+                        mascotaId: mascotaGuardada._id,
                         nombre: mascotaGuardada.nombre,
                         fechaNacimiento: mascotaGuardada.fechaNacimiento,
                         tipoDeMascota: mascotaGuardada.tipoDeMascota,
-                        raza: mascotaGuardada.raza
+                        raza: mascotaGuardada.raza,
+                        duenioId: idUsuario
                     }
                 }
             },
@@ -75,6 +77,7 @@ const agregarMascota = async (idUsuario, body) => {
         };
 
     } catch (error) {
+        console.error("Error al agregar mascota:", error); // Imprime el error
         return {
             msg: 'Error al agregar mascota',
             statusCode: 500,
@@ -82,6 +85,7 @@ const agregarMascota = async (idUsuario, body) => {
         };
     }
 };
+
 
 const editarMascota = async (idMascota, body) => {
     try {

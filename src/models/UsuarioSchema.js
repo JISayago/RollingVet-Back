@@ -13,13 +13,16 @@ const UsuarioSchema = new mongoose.Schema({
     },
     contrasenia: {
         type: String,
-        required: true
+        required: true,
+        select:false
     },
     telefono: {
-        type: String
+        type: String,
+        default:'-'
     },
     direccion: {
         type: String,
+        default:'-'
     },
     rol: {
         type: String,
