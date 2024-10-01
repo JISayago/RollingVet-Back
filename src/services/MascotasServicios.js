@@ -42,12 +42,24 @@ const obtenerMascota = async (idMascota) => {
 
 const agregarMascota = async (idUsuario, body) => {
     try {
+        const usuario = await UsuarioModel.findById(idUsuario); // Cambié find por findById
+
+        if (!usuario) {
+            return {
+                msg: 'Usuario no encontrado',
+                statusCode: 404
+            };
+        }
+
+        // Asignar el nombre del dueño al body antes de crear la instancia de MascotaModel
+        body.duenioNombre = usuario.nombre;
+        body.duenioId = idUsuario;
+
         const nuevaMascota = new MascotaModel(body);
-        nuevaMascota.duenioId = idUsuario;
+
         const mascotaGuardada = await nuevaMascota.save();
-console.log(mascotaGuardada)
         const usuarioActualizado = await UsuarioModel.findByIdAndUpdate(
-            {_id:idUsuario}, // Aquí usas solo el id, no necesitas un objeto
+            idUsuario,
             {
                 $push: {
                     mascotas: {
@@ -63,21 +75,14 @@ console.log(mascotaGuardada)
             { new: true }
         );
 
-        if (!usuarioActualizado) {
-            return {
-                msg: 'Usuario no encontrado',
-                statusCode: 404
-            };
-        }
-
         return {
             msg: 'Mascota agregada con éxito',
             statusCode: 201,
-            usuario: usuarioActualizado  
+            usuario: usuarioActualizado
         };
 
     } catch (error) {
-        console.error("Error al agregar mascota:", error); // Imprime el error
+        console.error("Error al agregar mascota:", error);
         return {
             msg: 'Error al agregar mascota',
             statusCode: 500,

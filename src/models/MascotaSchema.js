@@ -26,6 +26,14 @@ const MascotaSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    plan: {
+        type: String,
+        default: "Sin Plan"
+    },
+    duenioNombre: {
+        type: String,
+        required:true
+    },
     duenioId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Usuario',
