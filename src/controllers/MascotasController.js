@@ -75,10 +75,24 @@ const eliminarUnaMascotaLogica = async (req, res) => {
     }
 };
 
+const agregarImagenAUnaMascota = async (req, res) => {
+  
+    const result = await servicioMascota.agregarImagenPerfilMascota(
+        req.params.idMascota,
+        req.file);
+  
+    if (result.statusCode === 200) {
+      res.status(200).json({ msg: result.msg });
+    } else {
+      res.status(500).json({ msg: "Error al agregar la imagen a la mascota" });
+    }
+  };
+
 module.exports = {
     obtenerTodasLasMascotasDeUsuario,
     obtenerUnaMascota,
     agregarUnaMascota,
     editarUnaMascota,
-    eliminarUnaMascotaLogica
+    eliminarUnaMascotaLogica,
+    agregarImagenAUnaMascota
 };

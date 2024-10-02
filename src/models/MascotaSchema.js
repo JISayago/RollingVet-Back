@@ -29,6 +29,10 @@ const MascotaSchema = new mongoose.Schema({
         type: String,
         default: "Sin Plan"
     },
+    imagen: {
+        type: String,
+      default:"https://res.cloudinary.com/dqhdgsolz/image/upload/v1727904340/xxveal5isyfynsqniid1.jpg"  
+    },
     duenioNombre: {
         type: String,
         required: true

@@ -34,6 +34,10 @@ const UsuarioSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    imagen: {
+        type: String,
+      default:"https://res.cloudinary.com/dqhdgsolz/image/upload/v1727904340/wczdxwuf107jkpe7ekda.png"  
+    },
     mascotas: [{
         _id:false,
         mascotaId: {
@@ -55,7 +59,11 @@ const UsuarioSchema = new mongoose.Schema({
         plan: {
             type: String,
             default: "Sin Plan"
-        }
+        },
+        imagen: {
+            type: String,
+          default:"https://res.cloudinary.com/dqhdgsolz/image/upload/v1727904340/xxveal5isyfynsqniid1.jpg"  
+        },
     }],
     estaEliminado: {
         type: Boolean,

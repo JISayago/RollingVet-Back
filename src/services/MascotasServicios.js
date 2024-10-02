@@ -1,5 +1,6 @@
 const MascotaModel = require("../models/MascotaSchema");
 const UsuarioModel = require("../models/UsuarioSchema");
+const cloudinary = require("../helpers/cloudinary.config");
 
 const obtenerMascotasDelUsuario = async(idUsuario) => {
     try {
@@ -148,10 +149,58 @@ const eliminarMascotaLogica = async (idMascota) => {
     }
 };
 
+const agregarImagenPerfilMascota = async (idMascota, file) => {
+    console.log({
+        mascotaId: idMascota,
+        file:file
+    })
+    try {
+        const mascota = await MascotaModel.findById({_id:idMascota});
+        if (!mascota) {
+            return {
+                msg: 'Mascota no encontrada',
+                statusCode: 404
+            };
+        }
+        console.log({
+            mascota:mascota,
+        })
+
+        const imagen = await cloudinary.uploader.upload(file.path);
+        mascota.imagen = imagen.url; // Actualiza la URL de la imagen de la mascota
+
+        // Guardar los cambios en el modelo de mascota
+        await mascota.save(); // Guarda la mascota con la nueva imagen
+
+        // Actualizar la imagen en el array de mascotas del usuario
+        const usuarioActualizado = await UsuarioModel.findOneAndUpdate(
+            { 'mascotas.mascotaId': idMascota }, // Encuentra al usuario que tiene esta mascota
+            { $set: { 'mascotas.$.imagen': imagen.url } }, // Actualiza la imagen en el array de mascotas
+            { new: true }
+        );
+
+        return {
+            msg: 'Imagen cargada con éxito',
+            statusCode: 200,
+            usuario: usuarioActualizado // Opcional: devuelve el usuario actualizado
+        };
+
+    } catch (error) {
+        console.error("Error al agregar imagen de perfil a la mascota:", error);
+        return {
+            msg: 'Error al cargar la imagen de perfil',
+            statusCode: 500,
+            error: error.message
+        };
+    }
+};
+
+
 module.exports = {
     obtenerMascotasDelUsuario,
     obtenerMascota,
     agregarMascota,
     editarMascota,
-    eliminarMascotaLogica
+    eliminarMascotaLogica,
+    agregarImagenPerfilMascota
 };
