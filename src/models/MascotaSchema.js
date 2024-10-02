@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 
 const MascotaSchema = new mongoose.Schema({
-    nombre:
-    {
+    nombre: {
         type: String,
         required: true
     },
@@ -16,7 +15,7 @@ const MascotaSchema = new mongoose.Schema({
     },  
     raza: {
         type: String,
-        default:"Mestizo"
+        default: "Mestizo"
     },
     castrado: {
         type: Boolean,
@@ -32,26 +31,43 @@ const MascotaSchema = new mongoose.Schema({
     },
     duenioNombre: {
         type: String,
-        required:true
+        required: true
     },
     duenioId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Usuario',
         required: true
     },
+    fichas: [{
+        _id:false,
+        fichaId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'FichaVeterinaria',
+        },
+        fecha: {
+            type: Date,
+        },
+        motivo: {
+            type: String,
+        },
+        vistoPor: {
+            type: String,
+        },
+        tratamiento: {
+            type: String,
+        },
+        estaEliminada: {
+            type: Boolean,
+        }
+    }], // Cambiado a un array de ObjectId
     /*planId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Plan'
     },  
-    historialVisitasId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'HistorialVisitas'
-    },*/  
     /*historialVacunasId: {
         type: Schema.Types.ObjectId, ref: 'HistorialVacunas'
     }  */
-  });
-  
-  const Mascota = mongoose.model('Mascota', MascotaSchema);
-  module.exports = Mascota;
-  
+});
+
+const Mascota = mongoose.model('Mascota', MascotaSchema);
+module.exports = Mascota;

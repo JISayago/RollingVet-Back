@@ -39,7 +39,6 @@ const obtenerPerfilDeUnUsuario = async (req, res) => {
 
 
 const agregarUnUsuario = async (req, res) => {
-    console.log("controller req", req.body);
     try {
         const result = await serviciosUsuarios.agregarUsuario(req.body);
         console.log("Resultado del servicio:", result);  // Verifica qué resultado está devolviendo el servicio

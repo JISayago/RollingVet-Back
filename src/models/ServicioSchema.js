@@ -11,11 +11,6 @@ const ServicioSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    codigoReferencia: {
-        type: String,
-        required: true,
-        trim: true,
-    },
 });
 
 
