@@ -8,7 +8,8 @@ const FichaVeterinariaSchema = new mongoose.Schema({
     duenioId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Usuario',
-        required: true
+        required: true,
+select:false
     },
     duenioNombre: {
         type: String,

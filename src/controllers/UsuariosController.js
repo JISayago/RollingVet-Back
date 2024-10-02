@@ -27,7 +27,7 @@ const obtenerPerfilDeUnUsuario = async (req, res) => {
         const id = req.idUsuario; // Obtener el id del usuario desde el token
         const result = await serviciosUsuarios.obtenerPerfilUsuario(id);
         if (result.statusCode === 200) {
-            res.status(200).json(result.usuario);
+            res.status(200).json({usuario: result.usuario, fichas:result.fichasMascotas});
         } else {
             res.status(result.statusCode).json({ msg: result.msg || "Error al obtener el Usuario" });
         }
