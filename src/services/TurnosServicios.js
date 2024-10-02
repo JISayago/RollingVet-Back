@@ -22,19 +22,28 @@ const obtenerTurnosPorFecha = async (dia) => {
     }
 };
 
-const agregarTurno = async (body) => {
+const agregarTurnos= async (body) => {
+    const turnos = body;
     try {
-        const nuevoTurno = new TurnoModel(body);
+        // Verificar que el argumento sea un array
+        if (!Array.isArray(turnos) || turnos.length === 0) {
+            return {
+                msg: 'El parámetro debe ser un array de turnos',
+                statusCode: 400,
+            };
+        }
+
+        const nuevosTurnos = await TurnoModel.insertMany(turnos);
         
-        console.log("servicio",nuevoTurno)
-        await nuevoTurno.save();
         return {
-            msg: 'Turno agregado con éxito',
+            msg: 'Turnos agregados con éxito',
             statusCode: 201,
+            data: nuevosTurnos,
         };
     } catch (error) {
+        console.error('Error al agregar los turnos:', error); 
         return {
-            msg: 'Error al agregar el turno servicios',
+            msg: 'Error al agregar los turnos en el servicio',
             statusCode: 500,
         };
     }
@@ -70,6 +79,6 @@ const reservarTurno = async (idTurno, idReservador) => {
 
 module.exports = {
     obtenerTurnosPorFecha,
-    agregarTurno,
+    agregarTurnos,
     reservarTurno
 };

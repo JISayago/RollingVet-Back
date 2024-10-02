@@ -11,9 +11,10 @@ const obtenerTodosLosTurnosPorFecha = async (req, res) => {
     }
 }
 
-const agregarUnTurno = async (req, res) => {
+const agregarVariosTurnos = async (req, res) => {
+    
     try {
-        const result = await serviciosTurnos.agregarTurno(req.body);
+        const result = await serviciosTurnos.agregarTurnos(req.body);
         res.status(result.statusCode).json({ msg: result.msg });
     } catch (error) {
         res.status(500).json({ msg: 'Error al agregar el Turno' });
@@ -38,6 +39,6 @@ const reservarUnTurno = async (req, res) => {
 
 module.exports = {
     obtenerTodosLosTurnosPorFecha,
-    agregarUnTurno,
+    agregarVariosTurnos,
     reservarUnTurno
 }

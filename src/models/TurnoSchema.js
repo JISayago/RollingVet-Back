@@ -16,13 +16,12 @@ const TurnoSchema = new mongoose.Schema({
   },
   motivo: {
     type: String,
-    enum: ['consulta veterinaria', 'peluqueria', 'otros'],
+    enum: ['Consulta Veterinaria', 'Peluqueria', 'Otros'],
     required: true,
   },
-  profesional: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Usuario', // Se asume que hay un esquema de Usuario definido
-    required: true,
+  responsable: {
+    type: String,
+    default:"Por definir."
   },
   reservado: {
     type: Boolean,
