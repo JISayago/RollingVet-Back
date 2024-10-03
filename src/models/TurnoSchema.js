@@ -29,7 +29,7 @@ const TurnoSchema = new mongoose.Schema({
   },
   quienReservo: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Usuario', // Se asume que hay un esquema de Usuario definido
+    ref: 'Usuario', 
     required: function() {
       return this.reservado;
     },

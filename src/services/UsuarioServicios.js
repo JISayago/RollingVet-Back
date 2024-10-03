@@ -1,5 +1,6 @@
 const UsuarioModel = require("../models/UsuarioSchema");
 const FichaVeterinariaModel = require("../models/FichaVeterinariaSchema");
+const TurnoModel = require("../models/TurnoSchema");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -48,9 +49,11 @@ const obtenerPerfilUsuario = async (idUsuario) => {
             };
         }
         const fichasMascotas = await FichaVeterinariaModel.find({duenioId: idUsuario})
+        const turnos = await TurnoModel.find({quienReservo: idUsuario})
         return {
             usuario,
             fichasMascotas,
+            turnos,
             statusCode: 200,
         };
     } catch (error) {
