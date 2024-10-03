@@ -20,6 +20,7 @@ class Server{
         this.app.use('/mascotas', require('../routes/MascotasRutas'));
         this.app.use('/sucursales', require('../routes/SucursalesRutas'));
         this.app.use('/servicios', require('../routes/ServiciosRutas'));
+        this.app.use('/mensajes', require('../routes/EnvioMail.Rutas'));
     }
     listen() {
         
