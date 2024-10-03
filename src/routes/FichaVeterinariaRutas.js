@@ -5,7 +5,5 @@ const router = express.Router();
 
 router.post("/:id", agregarUnaFichaVeterinaria );
 router.get("/:id", obtenerFichasDeMascota );
-/*router.put("/:id", editarFichaDeMascota);
-router.delete("/:id", eliminarFichaDeMascota);*/
 
 module.exports = router;

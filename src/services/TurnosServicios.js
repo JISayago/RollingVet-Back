@@ -25,7 +25,6 @@ const obtenerTurnosPorFecha = async (dia) => {
 const agregarTurnos= async (body) => {
     const turnos = body;
     try {
-        // Verificar que el argumento sea un array
         if (!Array.isArray(turnos) || turnos.length === 0) {
             return {
                 msg: 'El parámetro debe ser un array de turnos',
@@ -49,7 +48,6 @@ const agregarTurnos= async (body) => {
     }
 };
 const reservarTurno = async (idTurno, idReservador) => {
-    console.log("datos",{idTurno:idTurno,idReservador:idReservador})
     try {
         const turnoReservar = await TurnoModel.findByIdAndUpdate(
             { _id: idTurno },

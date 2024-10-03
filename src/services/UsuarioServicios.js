@@ -74,14 +74,11 @@ const agregarUsuario = async (body) => {
         
         await nuevoUsuario.save();
         
-        console.log("Usuario guardado con éxito");
-        
         return {
             msg: 'Usuario agregado con éxito',
             statusCode: 201,
         };
     } catch (error) {
-        console.error("Error en agregarUsuario:", error); // Imprime el error
         return {
             msg: 'Error al agregar usuario',
             statusCode: 500,
@@ -141,7 +138,6 @@ const eliminarUsuarioLogico = async (idUsuario) => {
 };
 
 const inicioSesion = async (body) => {
-    console.log("body",body)
     const usuarioExiste = await UsuarioModel.findOne({ email: body.email }).select('+contrasenia') 
     if (!usuarioExiste) {
         return {

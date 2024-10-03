@@ -64,7 +64,6 @@ const agregarFichaVeterinaria = async (idMascota, body) => {
             };
     
         } catch (error) {
-            console.error("Error al agregar la ficha:", error);
             return {
                 msg: 'Error al agregar la ficha',
                 statusCode: 500,

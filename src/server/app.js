@@ -25,7 +25,7 @@ class Server{
     listen() {
         
         this.app.listen(this.port, () => {
-            console.log("servidor levantao",this.port)
+            console.log("servidor levantado",this.port)
         })
     }
 }

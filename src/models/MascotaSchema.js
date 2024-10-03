@@ -63,7 +63,7 @@ const MascotaSchema = new mongoose.Schema({
         estaEliminada: {
             type: Boolean,
         }
-    }], // Cambiado a un array de ObjectId
+    }], 
     /*planId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Plan'

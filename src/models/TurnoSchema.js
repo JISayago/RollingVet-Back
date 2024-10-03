@@ -6,12 +6,12 @@ const TurnoSchema = new mongoose.Schema({
     required: true,
   },
   hora: {
-    type: String, // Alternativamente podrías usar Date, pero con `String` puedes almacenar horas específicas sin problemas
+    type: String, 
     required: true,
   },
   sucursal: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Sucursal', // Se asume que hay un esquema de Usuario definido
+    ref: 'Sucursal',
     required: true,
   },
   motivo: {

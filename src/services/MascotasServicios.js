@@ -43,7 +43,7 @@ const obtenerMascota = async (idMascota) => {
 
 const agregarMascota = async (idUsuario, body) => {
     try {
-        const usuario = await UsuarioModel.findById(idUsuario); // Cambié find por findById
+        const usuario = await UsuarioModel.findById(idUsuario); 
 
         if (!usuario) {
             return {
@@ -52,7 +52,7 @@ const agregarMascota = async (idUsuario, body) => {
             };
         }
 
-        // Asignar el nombre del dueño al body antes de crear la instancia de MascotaModel
+       
         body.duenioNombre = usuario.nombre;
         body.duenioId = idUsuario;
 
@@ -83,7 +83,6 @@ const agregarMascota = async (idUsuario, body) => {
         };
 
     } catch (error) {
-        console.error("Error al agregar mascota:", error);
         return {
             msg: 'Error al agregar mascota',
             statusCode: 500,
@@ -150,10 +149,7 @@ const eliminarMascotaLogica = async (idMascota) => {
 };
 
 const agregarImagenPerfilMascota = async (idMascota, file) => {
-    console.log({
-        mascotaId: idMascota,
-        file:file
-    })
+  
     try {
         const mascota = await MascotaModel.findById({_id:idMascota});
         if (!mascota) {
@@ -162,31 +158,25 @@ const agregarImagenPerfilMascota = async (idMascota, file) => {
                 statusCode: 404
             };
         }
-        console.log({
-            mascota:mascota,
-        })
+      
 
         const imagen = await cloudinary.uploader.upload(file.path);
-        mascota.imagen = imagen.url; // Actualiza la URL de la imagen de la mascota
+        mascota.imagen = imagen.url; 
 
-        // Guardar los cambios en el modelo de mascota
-        await mascota.save(); // Guarda la mascota con la nueva imagen
-
-        // Actualizar la imagen en el array de mascotas del usuario
+        await mascota.save(); 
         const usuarioActualizado = await UsuarioModel.findOneAndUpdate(
-            { 'mascotas.mascotaId': idMascota }, // Encuentra al usuario que tiene esta mascota
-            { $set: { 'mascotas.$.imagen': imagen.url } }, // Actualiza la imagen en el array de mascotas
+            { 'mascotas.mascotaId': idMascota }, 
+            { $set: { 'mascotas.$.imagen': imagen.url } }, 
             { new: true }
         );
 
         return {
             msg: 'Imagen cargada con éxito',
             statusCode: 200,
-            usuario: usuarioActualizado // Opcional: devuelve el usuario actualizado
+            usuario: usuarioActualizado
         };
 
     } catch (error) {
-        console.error("Error al agregar imagen de perfil a la mascota:", error);
         return {
             msg: 'Error al cargar la imagen de perfil',
             statusCode: 500,

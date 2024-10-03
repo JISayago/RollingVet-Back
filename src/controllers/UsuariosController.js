@@ -24,7 +24,7 @@ const obtenerUnUsuario = async (req, res) => {
 };
 const obtenerPerfilDeUnUsuario = async (req, res) => {
     try {
-        const id = req.idUsuario; // Obtener el id del usuario desde el token
+        const id = req.idUsuario; 
         const result = await serviciosUsuarios.obtenerPerfilUsuario(id);
         if (result.statusCode === 200) {
             res.status(200).json({usuario: result.usuario, fichas:result.fichasMascotas,turnos: result.turnos});
@@ -32,7 +32,6 @@ const obtenerPerfilDeUnUsuario = async (req, res) => {
             res.status(result.statusCode).json({ msg: result.msg || "Error al obtener el Usuario" });
         }
     } catch (error) {
-        console.error("Error al obtener el usuario:", error); // Log del error
         res.status(500).json({ msg: "Error al obtener el Usuario" });
     }
 };
@@ -41,10 +40,8 @@ const obtenerPerfilDeUnUsuario = async (req, res) => {
 const agregarUnUsuario = async (req, res) => {
     try {
         const result = await serviciosUsuarios.agregarUsuario(req.body);
-        console.log("Resultado del servicio:", result);  // Verifica qué resultado está devolviendo el servicio
         res.status(result.statusCode).json({ msg: result.msg });
     } catch (error) {
-        console.error("Error en agregarUnUsuario:", error);  // Muestra cualquier error que ocurra
         res.status(500).json({ msg: 'Error al agregar el Usuario' });
     }
 };

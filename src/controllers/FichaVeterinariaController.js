@@ -9,7 +9,6 @@ const obtenerFichasDeMascota = async (req, res) => {
                 res.status(result.statusCode).json({ msg: result.msg || "Error al obtener el Usuario" });
             }
         } catch (error) {
-            console.error("Error al obtener el usuario:", error); // Log del error
             res.status(500).json({ msg: "Error al obtener el Usuario" });
         }
 };

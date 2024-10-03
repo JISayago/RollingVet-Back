@@ -26,7 +26,6 @@ const reservarUnTurno = async (req, res) => {
         req.params.idTurno,
         req.idUsuario
     );
-    console.log("rtc",result)
     if (result.statusCode === 200) {
         res.status(200).json({ msg: result.msg });
       } else if (result.statusCode === 400) {
