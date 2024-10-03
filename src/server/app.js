@@ -5,7 +5,7 @@ const cors = require('cors');
 class Server{
     constructor() { 
         this.app = express();
-        this.port = 3001;
+        //this.port = 3001;
         this.middlewares();
         this.rutas();
     }
@@ -29,4 +29,5 @@ class Server{
         })
     }
 }
-module.exports = Server;
+const server = new Server();
+module.exports = server.app;
