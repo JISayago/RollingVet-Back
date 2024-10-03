@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = () => async (req, res, next) => {
-    const token = req.header('auth').trim();
+    const token = req.header('auth');
     if (!token) {
         return res.status(401).json({ msg: 'No se proporcionó token' });
     }
