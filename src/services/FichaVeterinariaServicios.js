@@ -27,7 +27,7 @@ const agregarFichaVeterinaria = async (idMascota, body) => {
         const mascota = await MascotaModel.findById({_id: idMascota}); 
             if (!mascota) {
                 return {
-                    msg: 'mascota no encontrado',
+                    msg: 'mascota no encontrada',
                     statusCode: 404
                 };
             }
@@ -71,10 +71,113 @@ const agregarFichaVeterinaria = async (idMascota, body) => {
             };
         }
     };
+const eliminarFichaFísica = async (idFicha, idMascota) => {
+        try {
+            const mascota = await MascotaModel.findById(idMascota);
+            if (!mascota) {
+                return {
+                    msg: "Mascota no encontrada",
+                    statusCode: 404,
+                };
+            }
+            const fichaEliminada = await FichaVeterinariaModel.findByIdAndDelete(idFicha);
+            if (!fichaEliminada) {
+                return {
+                    msg: "Ficha no encontrada",
+                    statusCode: 404,
+                };
+            }
+            mascota.fichas = mascota.fichas.filter(ficha => ficha.fichaId.toString() !== idFicha);
+            await mascota.save();
+            return {
+                msg: "Ficha eliminada con éxito",
+                statusCode: 200,
+            };
+        } catch (error) {
+            console.error(error);
+            return {
+                msg: "Error al eliminar la ficha",
+                statusCode: 500,
+            };
+        }
+};
     
-
-
+const agregarFichaVacunas = async (idMascota, body) => {
+    try {
+        const mascota = await MascotaModel.findById({_id: idMascota}); 
+            if (!mascota) {
+                return {
+                    msg: 'mascota no encontrada',
+                    statusCode: 404
+                };
+        }
+            const mascotaActualizada = await MascotaModel.findByIdAndUpdate(
+                idMascota,
+                {
+                    $push: {
+                        historialVacunas: {
+                            fecha: body.fecha,
+                            nombre: body.nombre,
+                        }
+                    }
+                },
+                { new: true }
+            );
+            return {
+                msg: 'Vacuna agregada con éxito',
+                statusCode: 200,
+                mascotaActualizada: mascotaActualizada
+            };
+    
+    } catch (error) {
+            return {
+                msg: 'Error al agregar la Vacuna',
+                statusCode: 500,
+                error: error.message
+            };
+        }
+    };
+const agregarProximaVisita = async (idMascota, body) => {
+    try {
+        const mascota = await MascotaModel.findById({_id: idMascota}); 
+            if (!mascota) {
+                return {
+                    msg: 'mascota no encontrada',
+                    statusCode: 404
+                };
+        }
+            const mascotaActualizada = await MascotaModel.findByIdAndUpdate(
+                idMascota,
+                {
+                    $push: {
+                        proximosProcemientos: {
+                            fecha: body.fecha,
+                            detalle: body.detalle,
+                        }
+                    }
+                },
+                { new: true }
+            );
+            return {
+                msg: 'Visita agregada con éxito',
+                statusCode: 200,
+                mascotaActualizada: mascotaActualizada
+            };
+    
+    } catch (error) {
+            return {
+                msg: 'Error al agregar la Vacuna',
+                statusCode: 500,
+                error: error.message
+            };
+        }
+    };
+    
 module.exports = {
     obtenerFichasMascota,
-    agregarFichaVeterinaria
+    agregarFichaVeterinaria,
+    eliminarFichaFísica,
+    agregarFichaVacunas,
+    agregarProximaVisita
+    
 };

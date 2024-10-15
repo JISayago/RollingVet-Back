@@ -48,7 +48,7 @@ const agregarUnUsuario = async (req, res) => {
 
 
 const editarUnUsuario = async (req, res) => {
-    const id = req.params.id;
+    const id = req.idUsuario; 
     try {
         const result = await serviciosUsuarios.editarUsuario(id, req.body);
         if (result.statusCode === 200) {
@@ -62,7 +62,8 @@ const editarUnUsuario = async (req, res) => {
 };
 
 const eliminarUnUsuarioLogico = async (req, res) => {
-    const id = req.params.id;
+    let id = req.idUsuario;
+
     try {
         const result = await serviciosUsuarios.eliminarUsuarioLogico(id);
         if (result.statusCode === 200) {
@@ -72,6 +73,20 @@ const eliminarUnUsuarioLogico = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({ msg: "Error al eliminar el Usuario" });
+    }
+};
+const reincorporarEliminarUsuarioLogicoUnUsuarioLogico = async (req, res) => {
+    let id = req.params.idUsuario;
+
+    try {
+        const result = await serviciosUsuarios.reincorporarEliminarUsuarioLogico(id);
+        if (result.statusCode === 200) {
+            res.status(200).json({ msg: result.msg });
+        } else {
+            res.status(result.statusCode).json({ msg: result.msg || "Error al actualizar el Usuario" });
+        }
+    } catch (error) {
+        res.status(500).json({ msg: "Error al actualziar el Usuario" });
     }
 };
 
@@ -86,7 +101,31 @@ const inicioDeSesion = async (req, res) => {
     res.status(500).json({ msg: "Error al iniciar sesion del usuario" });
   }
 }
-
+const actualizarImagenPerfilDeUnUsuario = async (req, res) => {
+    const result = await serviciosUsuarios.agregarImagenPerfilUsuario(
+        req.idUsuario,
+        req.file);
+        console.log({res:result})
+        
+    if (result.statusCode === 200) {
+      res.status(200).json({ msg: result.msg });
+    } else {
+      res.status(500).json({ msg: "Error al agregar la imagen a la mascota" });
+    }
+  };
+const cambiarRolDeUnUsuario = async (req, res) => {
+    const id = req.params; 
+    try {
+        const result = await serviciosUsuarios.cambiarRol(id, req.body);
+        if (result.statusCode === 200) {
+            res.status(200).json({ msg: result.msg });
+        } else {
+            res.status(result.statusCode).json({ msg: result.msg || "Error al actualizar el Usuario" });
+        }
+    } catch (error) {
+        res.status(500).json({ msg: "Error al actualizar el Usuario" });
+    }
+  };
 module.exports = {
     obtenerTodasLosUsuarios,
     obtenerUnUsuario,
@@ -94,5 +133,8 @@ module.exports = {
     editarUnUsuario,
     eliminarUnUsuarioLogico,
     inicioDeSesion,
-    obtenerPerfilDeUnUsuario
+    obtenerPerfilDeUnUsuario,
+    actualizarImagenPerfilDeUnUsuario,
+    cambiarRolDeUnUsuario,
+    reincorporarEliminarUsuarioLogicoUnUsuarioLogico
 };

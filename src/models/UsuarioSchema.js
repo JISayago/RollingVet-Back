@@ -27,7 +27,7 @@ const UsuarioSchema = new mongoose.Schema({
     rol: {
         type: String,
         required: true,
-        enum: ['Cliente', 'Administrador', 'Veterinario','Pasante','Peluquero','Empleado'], 
+        enum: ['Cliente', 'Administrador', 'Veterinario'], 
         default: 'Cliente'  
     },  
     esEmpleado: {
@@ -59,6 +59,9 @@ const UsuarioSchema = new mongoose.Schema({
         plan: {
             type: String,
             default: "Sin Plan"
+        },
+        estaEliminada: {
+            type: Boolean,
         },
         imagen: {
             type: String,

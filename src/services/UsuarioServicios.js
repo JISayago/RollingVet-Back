@@ -3,6 +3,9 @@ const FichaVeterinariaModel = require("../models/FichaVeterinariaSchema");
 const TurnoModel = require("../models/TurnoSchema");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cloudinary = require("../helpers/cloudinary.config");
+const mongoose = require('mongoose');
+
 
 const obtenerUsuarios = async () => {
     try {
@@ -42,6 +45,7 @@ const obtenerUsuario = async (idUsuario) => {
 const obtenerPerfilUsuario = async (idUsuario) => {
     try {
         const usuario = await UsuarioModel.findOne({ _id: idUsuario });
+        usuario.mascotas = usuario.mascotas.filter(mascota => !mascota.estaEliminada);
         if (!usuario) {
             return {
                 msg: 'Usuario no encontrado',
@@ -116,7 +120,7 @@ const eliminarUsuarioLogico = async (idUsuario) => {
     try {
         const usuarioAEliminar = await UsuarioModel.findByIdAndUpdate(
             { _id: idUsuario },
-            { estaEliminado: true },
+            { estaEliminado: !estaEliminado },
             { new: true }
         );
         if (!usuarioAEliminar) {
@@ -132,6 +136,32 @@ const eliminarUsuarioLogico = async (idUsuario) => {
     } catch (error) {
         return {
             msg: 'Error al eliminar el usuario',
+            statusCode: 500,
+        };
+    }
+};
+const reincorporarEliminarUsuarioLogico = async (idUsuario) => {
+    try {
+        const objectId = new mongoose.Types.ObjectId(idUsuario);
+        const usuario = await UsuarioModel.findOne({_id:objectId})
+        const usuarioAEliminar = await UsuarioModel.findByIdAndUpdate(
+            { _id: objectId },
+            { estaEliminado: !usuario.estaEliminado},
+            { new: true }
+        );
+        if (!usuarioAEliminar) {
+            return {
+                msg: 'Usuario no encontrado',
+                statusCode: 404
+            };
+        }
+        return {
+            msg: 'Usuario modificado correctamente',
+            statusCode: 200
+        };
+    } catch (error) {
+        return {
+            msg: 'Error al modificar el usuario',
             statusCode: 500,
         };
     }
@@ -170,9 +200,73 @@ const inicioSesion = async (body) => {
             statusCode: 400
         }
     }
-        
-    
 }
+const agregarImagenPerfilUsuario = async (idUsuario, file) => {
+    try {
+        const usuario = await UsuarioModel.findById({_id:idUsuario});
+        if (!usuario) {
+            return {
+                msg: 'Usuario no encontrado',
+                statusCode: 404
+            };
+        }
+      
+
+        const imagen = await cloudinary.uploader.upload(file.path);
+        usuario.imagen = imagen.url; 
+
+        await usuario.save(); 
+        const usuarioActualizado = await UsuarioModel.findOneAndUpdate(
+            { _id: idUsuario }, 
+            { $set: { imagen: imagen.url } }, 
+            { new: true }
+        );
+
+        return {
+            msg: 'Imagen cargada con éxito',
+            statusCode: 200,
+            usuario: usuarioActualizado
+        };
+
+    } catch (error) {
+        return {
+            msg: 'Error al cargar la imagen de perfil',
+            statusCode: 500,
+            error: error.message
+        };
+    }
+};
+const cambiarRol = async (idUsuario, rol) => {
+    try {
+        // Convertir el idUsuario a ObjectId
+        const objectId = new mongoose.Types.ObjectId(idUsuario);
+
+        const usuarioActualizado = await UsuarioModel.findByIdAndUpdate(
+            objectId, // Usar objectId directamente
+             rol,
+            { new: true }
+        );
+
+        console.log(usuarioActualizado);
+        if (!usuarioActualizado) {
+            return {
+                msg: 'Usuario no encontrado',
+                statusCode: 404,
+            };
+        }
+        return {
+            msg: 'Usuario actualizado con éxito',
+            statusCode: 200,
+        };
+    } catch (error) {
+        console.error(error); // Log de error para más información
+        return {
+            msg: 'Error al editar usuario',
+            statusCode: 500,
+        };
+    }
+};
+
 
 module.exports = {
     obtenerUsuarios,
@@ -181,5 +275,8 @@ module.exports = {
     editarUsuario,
     eliminarUsuarioLogico,
     inicioSesion,
-    obtenerPerfilUsuario
+    obtenerPerfilUsuario,
+    agregarImagenPerfilUsuario,
+    cambiarRol,
+    reincorporarEliminarUsuarioLogico
 };

@@ -4,7 +4,8 @@ const cloudinary = require("../helpers/cloudinary.config");
 
 const obtenerMascotasDelUsuario = async(idUsuario) => {
     try {
-        const mascotas = await MascotaModel.find({ duenioId: idUsuario });
+        const mascotas = await MascotaModel.find({ duenioId: idUsuario, estaEliminada: false });
+        console.log("masc",mascotas)
         return {
             mascotas,
             statusCode: 200
@@ -185,6 +186,61 @@ const agregarImagenPerfilMascota = async (idMascota, file) => {
     }
 };
 
+const asignarPlan = async (idMascota,plan) => {
+    try {
+        const mascotaAsignarPlan = await MascotaModel.findByIdAndUpdate(
+            { _id: idMascota },
+            { plan: plan }, 
+            { new: true }
+        );
+
+        if (!mascotaAsignarPlan) {
+            return {
+                msg: 'Mascota no encontrada',
+                statusCode: 404
+            };
+        }
+
+        return {
+            msg: 'Plan asignado correctamente',
+            statusCode: 200
+        };
+    } catch (error) {
+        return {
+            msg: 'Error al asignar el plan',
+            statusCode: 500,
+            error: error.message
+        };
+    }
+};
+const marcarCastrado = async (idMascota,plan) => {
+    try {
+        const mascotaAsignarPlan = await MascotaModel.findByIdAndUpdate(
+            { _id: idMascota },
+            { castrado: true }, 
+            { new: true }
+        );
+
+        if (!mascotaAsignarPlan) {
+            return {
+                msg: 'Mascota no encontrada',
+                statusCode: 404
+            };
+        }
+
+        return {
+            msg: 'Mascota actualizada correctamente',
+            statusCode: 200
+        };
+    } catch (error) {
+        return {
+            msg: 'Error al marcar castrado.',
+            statusCode: 500,
+            error: error.message
+        };
+    }
+};
+
 
 module.exports = {
     obtenerMascotasDelUsuario,
@@ -192,5 +248,8 @@ module.exports = {
     agregarMascota,
     editarMascota,
     eliminarMascotaLogica,
-    agregarImagenPerfilMascota
+    agregarImagenPerfilMascota,
+    asignarPlan,
+    marcarCastrado
+
 };

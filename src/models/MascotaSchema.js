@@ -64,13 +64,26 @@ const MascotaSchema = new mongoose.Schema({
             type: Boolean,
         }
     }], 
-    /*planId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Plan'
-    },  
-    /*historialVacunasId: {
-        type: Schema.Types.ObjectId, ref: 'HistorialVacunas'
-    }  */
+    historialVacunas: [
+        {
+            fecha: {
+                type: Date
+            },
+            nombre:{
+                type: String
+            }
+        } 
+    ],
+    proximosProcemientos: [
+        {
+            fecha: {
+                type: Date
+            },
+            detalle:{
+                type: String
+            }
+        } 
+    ]
 });
 
 const Mascota = mongoose.model('Mascota', MascotaSchema);

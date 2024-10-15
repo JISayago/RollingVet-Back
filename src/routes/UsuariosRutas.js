@@ -1,7 +1,8 @@
 const express = require('express');
-const { obtenerTodasLosUsuarios, obtenerUnUsuario, agregarUnUsuario, editarUnUsuario, eliminarUnUsuarioLogico, inicioDeSesion, obtenerPerfilDeUnUsuario } = require('../controllers/UsuariosController');
+const { obtenerTodasLosUsuarios, obtenerUnUsuario, agregarUnUsuario, editarUnUsuario, eliminarUnUsuarioLogico, inicioDeSesion, obtenerPerfilDeUnUsuario, actualizarImagenPerfilDeUnUsuario, cambiarRolDeUnUsuario, reincorporarUsuarioLogicoUnUsuarioLogico, reincorporarEliminarUsuarioLogicoUnUsuarioLogico } = require('../controllers/UsuariosController');
 const { obtenerTodasLasMascotasDeUsuario, agregarUnaMascota } = require('../controllers/MascotasController');
 const auth = require('../middlewares/auth');
+const multer = require('../middlewares/multer');
 const router = express.Router();
 
 
@@ -10,8 +11,11 @@ router.get("/", obtenerTodasLosUsuarios);
 router.get("/:id", obtenerUnUsuario);
 router.post("/ingresar", inicioDeSesion);
 router.post("/registrar", agregarUnUsuario);
-router.put("/:id", editarUnUsuario);
-router.delete("/:id", eliminarUnUsuarioLogico);
+router.post("/actualizarImagenPerfil",auth(), multer.single("imagen"), actualizarImagenPerfilDeUnUsuario);
+router.put("/",auth(), editarUnUsuario);
+router.put("/cambioRol/:id", cambiarRolDeUnUsuario);
+router.delete("/eliminarPerfil",auth(), eliminarUnUsuarioLogico);
+router.post("/habilitarEliminarPerfil/:idUsuario", reincorporarEliminarUsuarioLogicoUnUsuarioLogico);
 router.post("/mascotas/registrar",auth(), agregarUnaMascota);
 router.get("/mascotas/:id", obtenerTodasLasMascotasDeUsuario);
 

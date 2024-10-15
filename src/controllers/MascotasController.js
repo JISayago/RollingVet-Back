@@ -2,10 +2,12 @@ const servicioMascota = require('../services/MascotasServicios');
 
 const obtenerTodasLasMascotasDeUsuario = async (req, res) => {
     const usuarioId = req.params.id;
+    console.log("obtenertodaslasmascotas")
 
     try {
         const result = await servicioMascota.obtenerMascotasDelUsuario(usuarioId);
         if (result.statusCode === 200) {
+            console.log("mascotasControl",result.mascotas)
             res.status(200).json(result.mascotas);
         } else {
             res.status(result.statusCode).json({ msg: "Error al obtener las Mascotas" });
@@ -87,6 +89,26 @@ const agregarImagenAUnaMascota = async (req, res) => {
       res.status(500).json({ msg: "Error al agregar la imagen a la mascota" });
     }
   };
+const asignarUnPlanAUnaMascota = async (req, res) => {
+    const result = await servicioMascota.asignarPlan(
+        req.params.idMascota,
+        req.body.plan);
+  
+    if (result.statusCode === 200) {
+      res.status(200).json({ msg: result.msg });
+    } else {
+      res.status(500).json({ msg: "Error al actualizar el plan de la mascota." });
+    }
+};
+const marcarCastradoDeUnaMascota = async (req, res) => {
+
+    const result = await servicioMascota.marcarCastrado(req.params.id)  
+    if (result.statusCode === 200) {
+      res.status(200).json({ msg: result.msg });
+    } else {
+      res.status(500).json({ msg: "Error al actualizar la mascota." });
+    }
+};
 
 module.exports = {
     obtenerTodasLasMascotasDeUsuario,
@@ -94,5 +116,7 @@ module.exports = {
     agregarUnaMascota,
     editarUnaMascota,
     eliminarUnaMascotaLogica,
-    agregarImagenAUnaMascota
+    agregarImagenAUnaMascota,
+    asignarUnPlanAUnaMascota,
+    marcarCastradoDeUnaMascota
 };
