@@ -12,7 +12,10 @@ class Server{
         this.rutas();
     }
     middlewares() {
-        this.app.use(cors())
+        app.use(cors({
+            origin: 'rolling-vet-front.vercel.app',
+            methods: ['GET', 'POST', 'PUT', 'DELETE']
+          }));
         this.app.use(express.static("./public"))
         this.app.use(express.json())
     }
