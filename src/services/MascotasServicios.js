@@ -21,8 +21,11 @@ const obtenerMascotasDelUsuario = async(idUsuario) => {
 };
 
 const obtenerMascota = async (idMascota) => {
+    console.log("id service previo try",idMascota)
     try {
-        const mascota = await MascotaModel.findOne({_id: idMascota});
+        console.log("antes await",idMascota)
+        const mascota = await MascotaModel.findOne({ _id: idMascota });
+        console.log("desp await",mascota)
         if (!mascota) {
             return {
                 msg: 'Mascota no encontrada',

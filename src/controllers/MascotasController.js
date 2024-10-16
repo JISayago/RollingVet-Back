@@ -19,7 +19,7 @@ const obtenerTodasLasMascotasDeUsuario = async (req, res) => {
 
 const obtenerUnaMascota = async (req, res) => {
     const id = req.params.id;
-
+   console.log("id controller previo try",id)
     try {
         const result = await servicioMascota.obtenerMascota(id);
         if (result.statusCode === 200) {
