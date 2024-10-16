@@ -63,7 +63,7 @@ const editarUnUsuario = async (req, res) => {
 
 const eliminarUnUsuarioLogico = async (req, res) => {
     let id = req.idUsuario;
-
+   
     try {
         const result = await serviciosUsuarios.eliminarUsuarioLogico(id);
         if (result.statusCode === 200) {

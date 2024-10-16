@@ -120,7 +120,7 @@ const eliminarUsuarioLogico = async (idUsuario) => {
     try {
         const usuarioAEliminar = await UsuarioModel.findByIdAndUpdate(
             { _id: idUsuario },
-            { estaEliminado: !estaEliminado },
+            { estaEliminado: true },
             { new: true }
         );
         if (!usuarioAEliminar) {

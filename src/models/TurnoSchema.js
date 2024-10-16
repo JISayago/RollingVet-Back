@@ -10,8 +10,8 @@ const TurnoSchema = new mongoose.Schema({
     required: true,
   },
   sucursal: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Sucursal',
+    type:String,
+    default: 'Sede Central',
     required: true,
   },
   motivo: {

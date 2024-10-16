@@ -44,7 +44,6 @@ const eliminarUnaFichaVeterinariaFisica = async (req, res) => {
 
 const agregarUnaVacunaAUnaMascota = async (req, res) => {
     const idMascota = req.params.idMascota;
-       
     try {
         const result = await servicioFichaVeterinaria.agregarFichaVacunas(idMascota, req.body);
         if (result.statusCode === 200) {
