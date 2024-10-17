@@ -6,7 +6,6 @@ const { default: mongoose } = require("mongoose");
 const obtenerMascotasDelUsuario = async(idUsuario) => {
     try {
         const mascotas = await MascotaModel.find({ duenioId: idUsuario, estaEliminada: false });
-        console.log("masc",mascotas)
         return {
             mascotas,
             statusCode: 200
@@ -22,9 +21,8 @@ const obtenerMascotasDelUsuario = async(idUsuario) => {
 };
 
 const obtenerMascota = async (idMascota) => {
-    const id = new mongoose.Types.ObjectId(idMascota);
     try {
-        const mascota = await MascotaModel.findOne({ _id: id });
+        const mascota = await MascotaModel.findById(idMascota);
         if (!mascota) {
             return {
                 msg: 'Mascota no encontrada',
