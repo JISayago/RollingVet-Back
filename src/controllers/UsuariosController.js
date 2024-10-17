@@ -105,7 +105,7 @@ const actualizarImagenPerfilDeUnUsuario = async (req, res) => {
     const result = await serviciosUsuarios.agregarImagenPerfilUsuario(
         req.idUsuario,
         req.file);
-        console.log({res:result})
+        
         
     if (result.statusCode === 200) {
       res.status(200).json({ msg: result.msg });
