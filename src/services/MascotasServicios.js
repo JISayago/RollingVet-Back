@@ -22,7 +22,7 @@ const obtenerMascotasDelUsuario = async(idUsuario) => {
 };
 
 const obtenerMascota = async (idMascota) => {
-    const id = new mongoose.Types.ObjectId(idUsuario);
+    const id = new mongoose.Types.ObjectId(idMascota);
     try {
         const mascota = await MascotaModel.findOne({ _id: id });
         if (!mascota) {
