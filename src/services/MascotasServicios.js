@@ -1,6 +1,7 @@
 const MascotaModel = require("../models/MascotaSchema");
 const UsuarioModel = require("../models/UsuarioSchema");
 const cloudinary = require("../helpers/cloudinary.config");
+const { default: mongoose } = require("mongoose");
 
 const obtenerMascotasDelUsuario = async(idUsuario) => {
     try {
@@ -21,11 +22,9 @@ const obtenerMascotasDelUsuario = async(idUsuario) => {
 };
 
 const obtenerMascota = async (idMascota) => {
-    console.log("id service previo try",idMascota)
+    const id = new mongoose.Types.ObjectId(idUsuario);
     try {
-        console.log("antes await",idMascota)
-        const mascota = await MascotaModel.findOne({ _id: idMascota });
-        console.log("desp await",mascota)
+        const mascota = await MascotaModel.findOne({ _id: id });
         if (!mascota) {
             return {
                 msg: 'Mascota no encontrada',
