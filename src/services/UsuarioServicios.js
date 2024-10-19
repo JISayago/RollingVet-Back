@@ -266,8 +266,20 @@ const cambiarRol = async (idUsuario, rol) => {
         };
     }
 };
-
-
+const obtenerUsuariosVeterinarios = async () => {
+    try {
+        const veterinarios = await UsuarioModel.find({ rol: "Veterinario" });
+        return {
+            veterinarios,
+            statusCode: 200,
+        };
+    } catch (error) {
+        return {
+            msg: 'Error al obtener veterinarios',
+            statusCode: 500,
+        };
+    }
+};
 module.exports = {
     obtenerUsuarios,
     obtenerUsuario,
@@ -278,5 +290,6 @@ module.exports = {
     obtenerPerfilUsuario,
     agregarImagenPerfilUsuario,
     cambiarRol,
-    reincorporarEliminarUsuarioLogico
+    reincorporarEliminarUsuarioLogico,
+    obtenerUsuariosVeterinarios
 };

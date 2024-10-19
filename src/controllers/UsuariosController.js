@@ -125,7 +125,16 @@ const cambiarRolDeUnUsuario = async (req, res) => {
     } catch (error) {
         res.status(500).json({ msg: "Error al actualizar el Usuario" });
     }
-  };
+};
+  
+const obtenerTodosLosVeterinarios = async (req, res) => {
+    try {
+        const result = await serviciosUsuarios.obtenerUsuariosVeterinarios();
+        res.status(result.statusCode).json(result.usuarios);
+    } catch (error) {
+        res.status(500).json({ msg: "Error al obtener los Veterinarios" });
+    }
+}
 module.exports = {
     obtenerTodasLosUsuarios,
     obtenerUnUsuario,
@@ -136,5 +145,7 @@ module.exports = {
     obtenerPerfilDeUnUsuario,
     actualizarImagenPerfilDeUnUsuario,
     cambiarRolDeUnUsuario,
-    reincorporarEliminarUsuarioLogicoUnUsuarioLogico
+    reincorporarEliminarUsuarioLogicoUnUsuarioLogico,
+    obtenerTodosLosVeterinarios
+    
 };
