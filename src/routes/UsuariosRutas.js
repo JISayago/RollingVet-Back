@@ -16,7 +16,7 @@ router.put("/",auth(), editarUnUsuario);
 router.put("/cambioRol/:id", cambiarRolDeUnUsuario);
 router.delete("/eliminarPerfil",auth(), eliminarUnUsuarioLogico);
 router.post("/habilitarEliminarPerfil/:idUsuario", reincorporarEliminarUsuarioLogicoUnUsuarioLogico);
-router.post("/veterinarios", obtenerTodosLosVeterinarios);
+router.get("/veterinarios", obtenerTodosLosVeterinarios);
 router.post("/mascotas/registrar",auth(), agregarUnaMascota);
 router.get("/mascotas/:id", obtenerTodasLasMascotasDeUsuario);
 
