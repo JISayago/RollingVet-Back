@@ -269,6 +269,7 @@ const cambiarRol = async (idUsuario, rol) => {
 const obtenerUsuariosVeterinarios = async () => {
     try {
         const veterinarios = await UsuarioModel.find({ rol: "Veterinario" });
+        console.log("vet",veterinarios)
         return {
             veterinarios,
             statusCode: 200,
