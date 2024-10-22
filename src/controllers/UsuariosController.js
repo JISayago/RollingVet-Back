@@ -130,7 +130,7 @@ const cambiarRolDeUnUsuario = async (req, res) => {
 const obtenerTodosLosVeterinarios = async (req, res) => {
     try {
         const result = await serviciosUsuarios.obtenerUsuariosVeterinarios();
-        res.status(result.statusCode).json(result.usuarios);
+        res.status(result.statusCode).json(result.veterinarios);
     } catch (error) {
         res.status(500).json({ msg: "Error al obtener los Veterinarios" });
     }
